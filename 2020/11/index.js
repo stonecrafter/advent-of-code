@@ -25,35 +25,112 @@ const getAdjacentOccupiedCount = (row, col, seats) => {
 }
 
 const getFirstVisibleTopLeft = (row, col, seats) => {
+  let currSeat;
+  let currRow = row;
+  let currCol = col;
 
+  // Find the first thing that is not a floor
+  do {
+    currRow = currRow - 1;
+    currCol = currCol - 1;
+    currSeat = (seats[currRow] || [])[currCol];
+  } while (currSeat === '.')
+
+  return currSeat === '#';
 }
 
 const getFirstVisibleTopCenter = (row, col, seats) => {
+  let currSeat;
+  let currRow = row;
+  let currCol = col;
 
+  do {
+    currRow = currRow - 1;
+    currSeat = (seats[currRow] || [])[currCol];
+  } while (currSeat === '.')
+
+  return currSeat === '#';
 }
 
 const getFirstVisibleTopRight = (row, col, seats) => {
+  let currSeat;
+  let currRow = row;
+  let currCol = col;
 
+  do {
+    currRow = currRow - 1;
+    currCol = currCol + 1;
+    currSeat = (seats[currRow] || [])[currCol];
+  } while (currSeat === '.')
+
+  return currSeat === '#';
 }
 
 const getFirstVisibleCenterLeft = (row, col, seats) => {
+  let currSeat;
+  let currRow = row;
+  let currCol = col;
 
+  do {
+    currCol = currCol - 1;
+    currSeat = (seats[currRow] || [])[currCol];
+  } while (currSeat === '.')
+
+  return currSeat === '#';
 }
 
 const getFirstVisibleCenterRight = (row, col, seats) => {
+  let currSeat;
+  let currRow = row;
+  let currCol = col;
 
+  do {
+    currCol = currCol + 1;
+    currSeat = (seats[currRow] || [])[currCol];
+  } while (currSeat === '.')
+
+  return currSeat === '#';
 }
 
 const getFirstVisibleBottomLeft = (row, col, seats) => {
+  let currSeat;
+  let currRow = row;
+  let currCol = col;
 
+  do {
+    currRow = currRow + 1;
+    currCol = currCol - 1;
+    currSeat = (seats[currRow] || [])[currCol];
+  } while (currSeat === '.')
+
+  return currSeat === '#';
 }
 
 const getFirstVisibleBottomCenter = (row, col, seats) => {
+  let currSeat;
+  let currRow = row;
+  let currCol = col;
 
+  do {
+    currRow = currRow + 1;
+    currSeat = (seats[currRow] || [])[currCol];
+  } while (currSeat === '.')
+
+  return currSeat === '#';
 }
 
 const getFirstVisibleBottomRight = (row, col, seats) => {
+  let currSeat;
+  let currRow = row;
+  let currCol = col;
 
+  do {
+    currRow = currRow + 1;
+    currCol = currCol + 1;
+    currSeat = (seats[currRow] || [])[currCol];
+  } while (currSeat === '.')
+
+  return currSeat === '#';
 }
 
 const getVisibleOccupiedCount = (row, col, seats) => {
@@ -99,7 +176,7 @@ const getTakenSeatsCount = (seats) =>
     seats.reduce((acc, row) =>
       acc + row.reduce((rowAcc, seat) => seat === '#' ? rowAcc + 1 : rowAcc, 0), 0);
 
-const getFinalTakenSeatsCount = (adjacentOnly) => {
+const getFinalTakenSeatsCount = (adjacentOnly = false) => {
   let currentSeats;
   let newSeats = seatMap;
 
@@ -111,5 +188,5 @@ const getFinalTakenSeatsCount = (adjacentOnly) => {
   return getTakenSeatsCount(newSeats);
 }
 
-console.log('Part 1: ', getFinalTakenSeatsCount(adjacentOnly));
+console.log('Part 1: ', getFinalTakenSeatsCount(true));
 console.log('Part 2: ', getFinalTakenSeatsCount());
