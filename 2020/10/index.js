@@ -25,4 +25,25 @@ const getJoltDifference = () => {
   return totals.one * (totals.three + 1);
 }
 
+const getTotalCombinations = () => {
+  const deviceJolts = Math.max(...inputList) + 3;
+  const listWithDevice = [...inputList, deviceJolts];
+
+  // Only one way to get to the first adapter
+  let comboList = [1];
+  for (let i = 1; i <= deviceJolts; i++) {
+    // This value is not in the adapter list, so there is no way to get to it
+    if (!listWithDevice.includes(i)) {
+      comboList.push(0);
+    } else {
+      const combos = (comboList[i - 1] || 0) + (comboList[i - 2] || 0) + (comboList[i - 3] || 0);
+      comboList.push(combos);
+    }
+  }
+
+  // How many ways are there to get to the final item - the device
+  return comboList.pop();
+};
+
 console.log('Part 1: ', getJoltDifference());
+console.log('Part 2: ', getTotalCombinations());
