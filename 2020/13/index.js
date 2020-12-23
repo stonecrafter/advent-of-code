@@ -25,7 +25,7 @@ const getEarliestConsecutiveTimestamp = () => {
     // Increment by the existing interval until one is
     // found which matches the expected time of the next bus
     let currTime = acc.timestamp;
-    while ((currTime + idx) % busId !== 0) {
+    while (currTime % busId !== busId - (idx % busId)) {
       currTime += acc.interval;
     }
 
