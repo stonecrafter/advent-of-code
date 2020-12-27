@@ -2,8 +2,20 @@ const fs = require('fs');
 
 const inputLines = fs.readFileSync('input.txt', 'utf8').split('\n');
 
-const calculateNoBrackets = (line) => {
-  const splitLine = line.split(' ');
+const calculateAllAdditions = (line) => {
+  let newLine = line.split(' ');
+  while (newLine.includes('+')) {
+    let plusIdx = newLine.indexOf('+');
+    let value = +newLine[plusIdx - 1] + +newLine[plusIdx + 1];
+    newLine = [].concat(newLine.slice(0, plusIdx - 1), `${value}`, newLine.slice(plusIdx + 2));
+  }
+
+  return newLine.join(' ');
+}
+
+const calculateNoBrackets = (line, additionFirst) => {
+  const lineToCalculate = additionFirst ? calculateAllAdditions(line) : line;
+  const splitLine = lineToCalculate.split(' ');
   // Will always be a number
   let result = +splitLine[0];
   for (let i = 1; i < (splitLine.length - 1); i += 2) {
@@ -20,7 +32,7 @@ const calculateNoBrackets = (line) => {
   return result;
 }
 
-const getResult = (line) => {
+const getResult = (line, additionFirst) => {
   let newEquation = line;
 
   // Brackets will always have a match
@@ -47,15 +59,16 @@ const getResult = (line) => {
         }
       }
 
-      const valueInBrackets = getResult(newEquation.slice(startIndex + 1, foundIndex));
+      const valueInBrackets = getResult(newEquation.slice(startIndex + 1, foundIndex), additionFirst);
       newEquation = newEquation.substring(0, startIndex) + valueInBrackets + newEquation.substring(foundIndex + 1);
     }
   }
 
-  return calculateNoBrackets(newEquation);
+  return calculateNoBrackets(newEquation, additionFirst);
 }
 
-const getResultSum = () =>
-  inputLines.reduce((acc, line) => acc + getResult(line), 0);
+const getResultSum = (additionFirst = false) =>
+  inputLines.reduce((acc, line) => acc + getResult(line, additionFirst), 0);
 
 console.log('Part 1: ', getResultSum());
+console.log('Part 2: ', getResultSum(true));
