@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const numbersList = fs.readFileSync('input.txt', 'utf8').split('\n').map((num) => +num);
+const numbersList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n').map((num) => +num);
 
 // Assuming all numbers in input is unique
 

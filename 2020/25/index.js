@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const [cardPubKey, doorPubKey] = fs.readFileSync('input.txt', 'utf8').split('\n').map(Number);
+const [cardPubKey, doorPubKey] = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n').map(Number);
 
 const SUBJECT_NUM = 7;
 

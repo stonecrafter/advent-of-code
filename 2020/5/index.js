@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const inputList = fs.readFileSync('input.txt', 'utf8').split('\n');
+const inputList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n');
 
 const seatIds = inputList.map((seat) => {
   // Min and max should be equal at the end so we only need one of them

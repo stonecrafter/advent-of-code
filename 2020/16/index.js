@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const [rules, myTicket, otherTickets] = fs.readFileSync('input.txt', 'utf8').split('\n\n');
+const [rules, myTicket, otherTickets] = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n\n');
 
 const { departureIndices, parsedRules } = rules.split('\n')
   .reduce((acc, rule, idx) => {

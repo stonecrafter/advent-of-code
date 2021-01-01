@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const inputList = fs.readFileSync('input.txt', 'utf8').split('\n');
+const inputList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n');
 
 const { mapByAllergen, listByFood, mapByIngredient } = inputList.reduce((acc, food, foodItemIndex) => {
   const [ingredients, allergens] = food.split(' (');

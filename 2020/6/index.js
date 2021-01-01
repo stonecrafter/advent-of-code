@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const groupsList = fs.readFileSync('input.txt', 'utf8').split('\n\n');
+const groupsList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n\n');
 
 const getTotalYesCount = () => {
   const answersPerGroup = groupsList.map((group) => {

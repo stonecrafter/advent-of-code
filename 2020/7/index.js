@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const bagsList = fs.readFileSync('input.txt', 'utf8').split('\n');
+const bagsList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n');
 
 const bagsMap = bagsList.reduce((bagsAcc, bag) => {
   // Split into bag id and contents, ie:

@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const [timestamp, schedules] = fs.readFileSync('input.txt', 'utf8').split('\n');
+const [timestamp, schedules] = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n');
 
 const getWaitTimes = () => {
   const runningBusses = schedules.split(',').filter((bus) => bus !== 'x').map((x) => +x);

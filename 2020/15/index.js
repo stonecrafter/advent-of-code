@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const input = fs.readFileSync('input.txt', 'utf8').split(',').map(Number);
+const input = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split(',').map(Number);
 
 const getNumberSpoken = (iter) => {
   // Turns out using Map is way faster than object

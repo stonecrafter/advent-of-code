@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 // Numbers in ascending order
-const inputList = fs.readFileSync('input.txt', 'utf8').split('\n').map((num) => +num).sort((a, b) => a - b);
+const inputList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n').map((num) => +num).sort((a, b) => a - b);
 
 const getJoltDifference = () => {
   const totals = inputList.reduce(({ currVoltage, one, two, three }, num) => {

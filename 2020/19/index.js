@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const [rules, messages] = fs.readFileSync('input.txt', 'utf8').split('\n\n');
+const [rules, messages] = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n\n');
 
 const messagesList = messages.split('\n');
 

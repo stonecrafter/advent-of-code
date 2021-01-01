@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const inputLines = fs.readFileSync('input.txt', 'utf8').split('\n');
+const inputLines = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n');
 
 const applyMask = (mask, value, unchangedBit) => {
   // Value is a base 10 number, convert it to binary and

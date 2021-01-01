@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const passwordsList = fs.readFileSync('input.txt', 'utf8').split('\n');
+const passwordsList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n');
 const passwordSettings = passwordsList.map((str) => {
   const [range, letter, password] = str.split(' ');
   const [min, max] = range.split('-');

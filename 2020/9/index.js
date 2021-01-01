@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const inputList = fs.readFileSync('input.txt', 'utf8').split('\n').map((num) => +num);
+const inputList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n').map((num) => +num);
 
 const WINDOW = 25;
 

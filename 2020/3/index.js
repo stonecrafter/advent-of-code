@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const inputLines = fs.readFileSync('input.txt', 'utf8').split('\n');
+const inputLines = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n');
 
 // All columns are of equal length in the input file
 const colCount = inputLines[0].length;

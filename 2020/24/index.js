@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const tileList = fs.readFileSync('input.txt', 'utf8').split('\n').map((tile) => {
+const tileList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n').map((tile) => {
   // Get a list of all the matches
   const directions = [];
   for (let i = 0; i < tile.length; i++) {

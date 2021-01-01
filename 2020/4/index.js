@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const passportList = fs.readFileSync('input.txt', 'utf8').split('\n\n');
+const passportList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n\n');
 
 const REQUIRED_FIELDS = [
   'byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid'

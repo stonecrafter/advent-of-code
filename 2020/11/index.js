@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 // 2d array, equal columns
-const seatMap = fs.readFileSync('input.txt', 'utf8').split('\n').map((line) => line.split(''));
+const seatMap = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n').map((line) => line.split(''));
 
 const getSeatOccupied = (row, col, seats) => {
   const seat = (seats[row] || [])[col];

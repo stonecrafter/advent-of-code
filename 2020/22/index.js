@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const [player1, player2] = fs.readFileSync('input.txt', 'utf8').split('\n\n');
+const [player1, player2] = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n\n');
 
 // Start of array is the top of the deck
 // Shift to play from top, push to add to bottom

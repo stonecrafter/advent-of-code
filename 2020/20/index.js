@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const tileList = fs.readFileSync('input.txt', 'utf8').split('\n\n');
+const tileList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n\n');
 
 const DIMENSION = Math.sqrt(tileList.length);
 
