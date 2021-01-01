@@ -50,7 +50,7 @@ const setupTiles = (tileSet) => {
   });
 }
 
-const getBlackTileCount = () => {
+const getActiveTileCount = () => {
   const activeTiles = new Set();
 
   setupTiles(activeTiles);
@@ -127,5 +127,5 @@ const getCountAfterRounds = (rounds) => {
   return activeTiles.size;
 }
 
-console.log('Part 1: ', getBlackTileCount());
+console.log('Part 1: ', getActiveTileCount());
 console.log('Part 2: ', getCountAfterRounds(100));
