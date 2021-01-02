@@ -9,7 +9,7 @@ const rulesMap = rules.split('\n').reduce((acc, rule) => {
   return {
     ...acc,
     [ruleId]: mappings.replace(/"/g, ''),
-  }
+  };
 }, {});
 
 // Part 2 is crazy. According to the problem description we
@@ -18,19 +18,18 @@ const rulesMapWithLoop = {
   ...rulesMap,
   8: '42 | 42 8',
   11: '42 31 | 42 11 31',
-}
+};
 
 // Just the lowest number to get the right answer for my input....
 const RECURSION_LIMIT = 5;
 
-const isFullyProcessed = (rule) =>
-  rule.split('').every((char) => 'ab|() '.indexOf(char) > -1);
+const isFullyProcessed = (rule) => rule.split('').every((char) => 'ab|() '.indexOf(char) > -1);
 
 const getRuleRegex = (startRule, withLoop, mapOfRules) => {
   let rule = startRule;
   let eightCount = 0;
   let elevenCount = 0;
-  while (!isFullyProcessed(rule)) {    
+  while (!isFullyProcessed(rule)) {
     // Get the start index of the first number in the rule string
     const firstNumStart = rule.search(/\d/);
     // And then where the number ends
@@ -57,13 +56,15 @@ const getRuleRegex = (startRule, withLoop, mapOfRules) => {
           eightCount += 1;
         } else {
           // Once we reach the limit, discard the recursive part of the split
-          newRulePiece = firstNumRules.split(' |')[0];
+          const [firstPart] = firstNumRules.split(' |')[0];
+          newRulePiece = firstPart;
         }
       } else if (firstNum === '11') {
         if (elevenCount < RECURSION_LIMIT) {
           elevenCount += 1;
         } else {
-          newRulePiece = firstNumRules.split(' |')[0];
+          const [firstPart] = firstNumRules.split(' |')[0];
+          newRulePiece = firstPart;
         }
       }
     }
@@ -73,15 +74,15 @@ const getRuleRegex = (startRule, withLoop, mapOfRules) => {
 
   // Remove space delimiters
   return new RegExp(`^${rule.replace(/\s/g, '')}$`);
-}
+};
 
 const getMatchCountForRule = (ruleId, withLoop = false) => {
   const mapOfRules = withLoop ? rulesMapWithLoop : rulesMap;
   const startRules = mapOfRules[ruleId];
   const regex = getRuleRegex(startRules, withLoop, mapOfRules);
 
-  return messagesList.reduce((acc, message) => !!message.match(regex) ? acc + 1 : acc, 0);
-}
+  return messagesList.reduce((acc, message) => (message.match(regex) ? acc + 1 : acc), 0);
+};
 
 console.log('Part 1: ', getMatchCountForRule(0));
 console.log('Part 2: ', getMatchCountForRule(0, true));

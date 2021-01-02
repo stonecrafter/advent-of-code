@@ -39,6 +39,8 @@ const setupTiles = (tileSet) => {
           return [x - 1, y - 1];
         case 'w':
           return [x - 2, y];
+        default:
+          return [x, y];
       }
     }, [0, 0]).join(',');
 
@@ -48,7 +50,7 @@ const setupTiles = (tileSet) => {
       tileSet.add(endTile);
     }
   });
-}
+};
 
 const getActiveTileCount = () => {
   const activeTiles = new Set();
@@ -56,7 +58,7 @@ const getActiveTileCount = () => {
   setupTiles(activeTiles);
 
   return activeTiles.size;
-}
+};
 
 const getNeighbourPositions = (pos) => {
   const [x, y] = pos.split(',').map(Number);
@@ -66,27 +68,27 @@ const getNeighbourPositions = (pos) => {
     `${x + 2},${y}`,
     `${x + 1},${y - 1}`,
     `${x - 1},${y - 1}`,
-    `${x - 2},${y}`
+    `${x - 2},${y}`,
   ];
-}
+};
 
 // Shamelessly copied over from day 17
-const getNumActive = (listToCheck, activeSet) =>
-  listToCheck.reduce((acc, cell) => activeSet.has(cell) ? acc + 1 : acc, 0);
+const getNumActive = (listToCheck, activeSet) => listToCheck.reduce(
+  (acc, cell) => (activeSet.has(cell) ? acc + 1 : acc), 0,
+);
 
 // Should this position be active ("black") or inactive in the next iteration?
 const shouldItemBeActive = (position, isActive, activeSet) => {
   const neighbours = getNeighbourPositions(position);
   const activeNeighboursCount = getNumActive(neighbours, activeSet);
-  
+
   if (isActive) {
     // Stays active if exactly 1 or 2 active neighbours
     return (activeNeighboursCount === 1 || activeNeighboursCount === 2);
-  } else {
-    // Becomes active if exactly 2 neighbours are active
-    return activeNeighboursCount === 2;
   }
-}
+  // Becomes active if exactly 2 neighbours are active
+  return activeNeighboursCount === 2;
+};
 
 const iterate = (activeSet) => {
   const checkedItems = new Set();
@@ -112,7 +114,7 @@ const iterate = (activeSet) => {
   });
 
   return newSet;
-}
+};
 
 const getCountAfterRounds = (rounds) => {
   let activeTiles = new Set();
@@ -125,7 +127,7 @@ const getCountAfterRounds = (rounds) => {
   }
 
   return activeTiles.size;
-}
+};
 
 console.log('Part 1: ', getActiveTileCount());
 console.log('Part 2: ', getCountAfterRounds(100));

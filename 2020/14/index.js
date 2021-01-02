@@ -7,17 +7,17 @@ const applyMask = (mask, value, unchangedBit) => {
   // pad with leading 0s so it has length of 36
   let binaryValue = (+value).toString(2);
   while (binaryValue.length < 36) {
-    binaryValue = '0' + binaryValue;
+    binaryValue = `0${binaryValue}`;
   }
 
   let maskedVal = '';
   for (let i = 0; i < 36; i++) {
     const nextBit = mask[i] === unchangedBit ? binaryValue[i] : mask[i];
-    maskedVal = maskedVal + nextBit;
+    maskedVal += nextBit;
   }
 
   return maskedVal;
-}
+};
 
 const applyMaskWithFloats = (mask, memAddr, value) => {
   const maskedAddr = applyMask(mask, memAddr, '0');
@@ -28,25 +28,24 @@ const applyMaskWithFloats = (mask, memAddr, value) => {
     // No floats, only need to write to one memory address
     return {
       [parseInt(maskedAddr, 2)]: binaryVal,
-    }
+    };
   }
 
   const allAddrs = maskedAddr.split('').reduce((addrList, bit, idx) => {
     if (bit !== 'X') return addrList;
 
-    return addrList.reduce((acc, inProgAddr) =>
-      [
-        ...acc,
-        inProgAddr.substring(0, idx) + '0' + inProgAddr.substring(idx + 1),
-        inProgAddr.substring(0, idx) + '1' + inProgAddr.substring(idx + 1),
-      ], []);
+    return addrList.reduce((acc, inProgAddr) => [
+      ...acc,
+      `${inProgAddr.substring(0, idx)}0${inProgAddr.substring(idx + 1)}`,
+      `${inProgAddr.substring(0, idx)}1${inProgAddr.substring(idx + 1)}`,
+    ], []);
   }, [maskedAddr]);
 
   return allAddrs.reduce((acc, addr) => ({
     ...acc,
     [parseInt(addr, 2)]: binaryVal,
   }), {});
-}
+};
 
 const getMemorySums = (isV2 = false) => {
   let currentMask;
@@ -56,7 +55,7 @@ const getMemorySums = (isV2 = false) => {
       currentMask = value;
       return memMap;
     }
-    
+
     // mem lines always come in this form: "mem[xxxx]"
     const key = instr.slice(4, instr.length - 1);
 
@@ -65,17 +64,17 @@ const getMemorySums = (isV2 = false) => {
       return {
         ...memMap,
         [key]: newVal,
-      }
+      };
     }
 
     return {
       ...memMap,
       ...applyMaskWithFloats(currentMask, key, value),
-    }
+    };
   }, {});
 
-  return Object.values(memoryMap).reduce((acc, val) => acc + parseInt(val, 2), 0)
-}
+  return Object.values(memoryMap).reduce((acc, val) => acc + parseInt(val, 2), 0);
+};
 
 console.log('Part 1: ', getMemorySums());
 console.log('Part 2: ', getMemorySums(true));

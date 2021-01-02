@@ -27,7 +27,7 @@ const getNumberSpoken = (iter) => {
 
       // Add the current number to the start of the turns map
       // Or start a new array if this number has never been spoken before
-      const newArray = !!newTurnsMap ? [i, newTurnsMap[0]] : [i];
+      const newArray = newTurnsMap ? [i, newTurnsMap[0]] : [i];
       numAndTurns.set(newNum, newArray);
 
       // Now this becomes the most recently spoken number
@@ -36,7 +36,7 @@ const getNumberSpoken = (iter) => {
   }
 
   return mostRecentNum;
-}
+};
 
 console.log('Part 1: ', getNumberSpoken(2020));
 console.log('Part 2: ', getNumberSpoken(30000000));

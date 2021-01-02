@@ -17,7 +17,7 @@ const playRound = (deck1, deck2) => {
     // Card numbers are guaranteed to be unique in the deck
     deck2.push(playTwo, playOne);
   }
-}
+};
 
 // Keep track of card configurations in each round
 const playRecursiveRound = (deck1, deck2, roundConfigs) => {
@@ -28,12 +28,10 @@ const playRecursiveRound = (deck1, deck2, roundConfigs) => {
   // If this configuration has existed before,
   // player 1 instantly wins... we can represent this for now by
   // killing all of player 2's cards
-  const areBothDecksEqual = roundConfigs.some((round) =>
-    ((round.deck1.join(',') === deck1.join(',')) &&
-    (round.deck2.join(',') === deck2.join(',')))
-  );
+  const areBothDecksEqual = roundConfigs.some((round) => ((round.deck1.join(',') === deck1.join(','))
+    && (round.deck2.join(',') === deck2.join(','))));
   if (areBothDecksEqual) {
-    return deck2.splice(0, deck2.length);
+    deck2.splice(0, deck2.length);
   }
 
   roundConfigs.push({ deck1: [...deck1], deck2: [...deck2] });
@@ -53,23 +51,21 @@ const playRecursiveRound = (deck1, deck2, roundConfigs) => {
     while (deck1Copy.length > 0 && deck2Copy.length > 0) {
       playRecursiveRound(deck1Copy, deck2Copy, newRoundConfigs);
     }
-    
+
     if (deck1Copy.length === 0) {
       // Player 2 wins
       deck2.push(playTwo, playOne);
     } else {
       deck1.push(playOne, playTwo);
     }
-  } else {
+  } else if (playOne > playTwo) {
     // Otherwise, the winner of the round is the player with the higher-value card
-    if (playOne > playTwo) {
-      deck1.push(playOne, playTwo);
-    } else {
-      // Card numbers are guaranteed to be unique in the deck
-      deck2.push(playTwo, playOne);
-    }
+    deck1.push(playOne, playTwo);
+  } else {
+    // Card numbers are guaranteed to be unique in the deck
+    deck2.push(playTwo, playOne);
   }
-}
+};
 
 const getWinningScore = (deck1, deck2, recursive = false) => {
   // Make a copy for sanity's sake
@@ -92,7 +88,7 @@ const getWinningScore = (deck1, deck2, recursive = false) => {
   return winningDeck
     .reverse()
     .reduce((acc, card, idx) => acc + card * (idx + 1), 0);
-}
+};
 
 console.log('Part 1: ', getWinningScore(playerOneStart, playerTwoStart));
 console.log('Part 2: ', getWinningScore(playerOneStart, playerTwoStart, true));

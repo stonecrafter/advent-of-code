@@ -10,23 +10,22 @@ const { departureIndices, parsedRules } = rules.split('\n')
     // min1-max1 or min2-max2 => [min1, max1, min2, max2]
     return {
       departureIndices:
-        instruction.startsWith('departure') ?
-          [...acc.departureIndices, idx] :
-          acc.departureIndices,
+        instruction.startsWith('departure')
+          ? [...acc.departureIndices, idx]
+          : acc.departureIndices,
       parsedRules: [
         ...acc.parsedRules,
         values.split(' or ').join('-').split('-').map(Number),
-      ]
-    }
+      ],
+    };
   }, { departureIndices: [], parsedRules: [] });
-
-const isValidForAnyRule = (value) =>
-  parsedRules.some((rule) => isValidForRule(rule, value));
 
 const isValidForRule = (rule, value) => {
   const [min1, max1, min2, max2] = rule;
   return (value >= min1 && value <= max1) || (value >= min2 && value <= max2);
-}
+};
+
+const isValidForAnyRule = (value) => parsedRules.some((rule) => isValidForRule(rule, value));
 
 const getErrorRate = () => {
   // The first line is not a ticket
@@ -43,7 +42,7 @@ const getErrorRate = () => {
   });
 
   return invalidCount;
-}
+};
 
 const validTickets = otherTickets
   .split('\n')
@@ -55,8 +54,7 @@ const validTickets = otherTickets
     return isInvalid ? acc : [...acc, parsedTicket];
   }, []);
 
-const hasDepartureKeys = (arr) =>
-  departureIndices.every((index) => arr.includes(`${index}`));
+const hasDepartureKeys = (arr) => departureIndices.every((index) => arr.includes(`${index}`));
 
 const getMatchingColumns = (rule) => {
   const matchingColumns = [];
@@ -68,7 +66,7 @@ const getMatchingColumns = (rule) => {
   }
 
   return matchingColumns;
-}
+};
 
 const getDepartureCode = () => {
   // Key - rule, value - column in the ticket
@@ -80,18 +78,20 @@ const getDepartureCode = () => {
       // Don't bother with already matched rules
       if (!ruleToColumn[rule]) {
         const matchingColumns = getMatchingColumns(rule);
-        const filteredColumns = matchingColumns.filter((col) => !Object.values(ruleToColumn).includes(col));
+        const filteredColumns = matchingColumns.filter(
+          (col) => !Object.values(ruleToColumn).includes(col),
+        );
         if (filteredColumns.length === 1) {
-          ruleToColumn[idx] = filteredColumns[0];
+          const [firstColumn] = filteredColumns;
+          ruleToColumn[idx] = firstColumn;
         }
       }
     });
   }
 
   const myParsedTicket = myTicket.split(',').map(Number);
-  return departureIndices.reduce((acc, index) =>
-    acc * myParsedTicket[ruleToColumn[index]], 1);
-}
+  return departureIndices.reduce((acc, index) => acc * myParsedTicket[ruleToColumn[index]], 1);
+};
 
 console.log('Part 1: ', getErrorRate());
 console.log('Part 2: ', getDepartureCode());

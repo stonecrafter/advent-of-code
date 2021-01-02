@@ -8,40 +8,40 @@ const DIMENSION = Math.sqrt(tileList.length);
  * SOLUTION FOR PART 1
  */
 
-const tileBorderMap = tileList.reduce((acc, tile) => {
+const tileBorderMap = tileList.reduce((tileAcc, tile) => {
   const imageRows = tile.split('\n').slice(1);
   const tileId = tile.match(/\d+/)[0];
   return {
-    ...acc,
+    ...tileAcc,
     [tileId]: {
       top: imageRows[0],
       right: imageRows.reduce((acc, row) => acc + row[row.length - 1], ''),
       bottom: imageRows[imageRows.length - 1],
       left: imageRows.reduce((acc, row) => acc + row[0], ''),
-    }
-  }
+    },
+  };
 }, {});
 
-const findMatchingTileForBorder = (border, currentTileId) =>
-  Object.keys(tileBorderMap).find((key) => {
-    // Don't try to match with the current tile
+const findMatchingTileForBorder = (border, currentTileId) => Object.keys(tileBorderMap).find(
+  (key) => {
+  // Don't try to match with the current tile
     if (key === currentTileId) return false;
     const borders = Object.values(tileBorderMap[key]);
     return borders.includes(border) || borders.includes(border.split('').reverse().join(''));
-  });
+  },
+);
 
 const countTileMatches = (tileId) => {
   const tilesToMatch = tileBorderMap[tileId];
   return Object.values(tilesToMatch)
-    .reduce((acc, border) =>
-      findMatchingTileForBorder(border, tileId) ? acc + 1 : acc,
-    0);
-}
+    .reduce((acc, border) => (findMatchingTileForBorder(border, tileId) ? acc + 1 : acc),
+      0);
+};
 
-const getCornerTiles = () =>
-  Object.keys(tileBorderMap).reduce((acc, id) =>
-    // Corner tiles are those having two borders that don't match anything?
-    countTileMatches(id) === 2 ? acc * +id : acc, 1);
+// Corner tiles are those having two borders that don't match anything?
+const getCornerTiles = () => Object.keys(tileBorderMap).reduce(
+  (acc, id) => (countTileMatches(id) === 2 ? acc * +id : acc), 1,
+);
 
 /**
  * BEGIN PART 2, aka the way more complicated part
@@ -85,7 +85,7 @@ class Tile {
       this.getLeftBorder(),
       this.getTopBorder(),
       this.getRightBorder(),
-      this.getBottomBorder()
+      this.getBottomBorder(),
     ];
   }
 
@@ -143,54 +143,51 @@ const tileMap = tileList.reduce((acc, tile) => {
   const newTile = new Tile(tileId, imageRows);
   return {
     ...acc,
-    [tileId]: newTile
-  }
+    [tileId]: newTile,
+  };
 }, {});
 
-const getCurrentBorders = () =>
-  Object.values(tileMap).map((tile) => ({
-    id: tile.id,
-    borders: tile.getAllBorders(),
-  }));
+const getCurrentBorders = () => Object.values(tileMap).map((tile) => ({
+  id: tile.id,
+  borders: tile.getAllBorders(),
+}));
 
 // Corner tiles don't match 2 sides
 const getCornerTileIds = () => {
   const currentBorders = getCurrentBorders();
-  return Object.values(tileMap).reduce((acc, tile) => {
+  return Object.values(tileMap).reduce((tileAcc, tile) => {
     const borders = tile.getAllBorders();
     const matchCount = borders.reduce((acc, border) => {
-      const matched = currentBorders.some((otherTile) =>
-        (otherTile.id !== tile.id) &&
-        (otherTile.borders.includes(border) || otherTile.borders.includes(border.split('').reverse().join('')))
-      )
+      const matched = currentBorders.some((otherTile) => (otherTile.id !== tile.id)
+        && (otherTile.borders.includes(border) || otherTile.borders.includes(border.split('').reverse().join(''))));
       return matched ? acc + 1 : acc;
     }, 0);
 
-    return matchCount === 2 ? [...acc, tile.id] : acc;
+    return matchCount === 2 ? [...tileAcc, tile.id] : tileAcc;
   }, []);
-}
+};
 
 const findMatchingTile = (border, id) => {
   const currentBorders = getCurrentBorders();
-  const match = currentBorders.find((otherTile) =>
-    (otherTile.id !== id) && otherTile.borders.includes(border)
-  )
+  const match = currentBorders.find(
+    (otherTile) => (otherTile.id !== id) && otherTile.borders.includes(border),
+  );
 
   // Don't bother checking reverse if already found a positive match
   if (match) return { match, reversed: false };
 
-  const matchReversed = currentBorders.find((otherTile) =>
-    (otherTile.id !== id) && otherTile.borders.includes(border.split('').reverse().join(''))
-  )
+  const matchReversed = currentBorders.find(
+    (otherTile) => (otherTile.id !== id) && otherTile.borders.includes(border.split('').reverse().join('')),
+  );
 
   if (matchReversed) return { match: matchReversed, reversed: true };
 
   return null;
-}
+};
 
 const buildFirstRow = (startingTile) => {
   let currentTile = startingTile;
-  let firstRow = [startingTile.id];
+  const firstRow = [startingTile.id];
   while (firstRow.length < DIMENSION) {
     // Current tile's right pointer will already be another tile id
     // But which one of that tile's borders is a match?
@@ -228,13 +225,13 @@ const buildFirstRow = (startingTile) => {
   }
 
   return firstRow;
-}
+};
 
 const buildRow = (prevRow) => {
   const newRow = [];
   let currIdx = 0;
   while (newRow.length < DIMENSION) {
-    let upstairsTile = tileMap[prevRow[currIdx]];
+    const upstairsTile = tileMap[prevRow[currIdx]];
     const targetTile = tileMap[upstairsTile.bottom];
     while (!targetTile.top) {
       if (upstairsTile.bottomBorder === targetTile.topBorder) {
@@ -265,7 +262,7 @@ const buildRow = (prevRow) => {
   }
 
   return newRow;
-}
+};
 
 const getSeaMonsterCount = (tile) => {
   const { image } = tile;
@@ -289,7 +286,7 @@ const getSeaMonsterCount = (tile) => {
   }
 
   return count;
-}
+};
 
 const buildImage = () => {
   const cornerTiles = getCornerTileIds();
@@ -331,9 +328,8 @@ const buildImage = () => {
       const croppedTile = tileMap[tileId].getCopyWithoutBorders();
       if (!acc) {
         return croppedTile;
-      } else {
-        return croppedTile.map((rowInImage, idx) => acc[idx] + rowInImage);
       }
+      return croppedTile.map((rowInImage, idx) => acc[idx] + rowInImage);
     }, null);
 
     return [].concat(finalRows, imageRows);
@@ -342,7 +338,7 @@ const buildImage = () => {
   // Turn it into a tile to take advantage of rotate and flip functionality
   // id can just be something arbitrary
   return new Tile('final', finalImage);
-}
+};
 
 const findSeaMonstersFromImage = (imageTile) => {
   let seaMonsterCount = 0;
@@ -372,7 +368,7 @@ const findSeaMonstersFromImage = (imageTile) => {
   }
 
   return seaMonsterCount;
-}
+};
 
 const getNonSeaMonsterCount = () => {
   // A seamonster consists of 15 '#' symbols
@@ -380,12 +376,11 @@ const getNonSeaMonsterCount = () => {
 
   const imageTile = buildImage();
   const seaMonsterCount = findSeaMonstersFromImage(imageTile);
-  const hashtagCount = imageTile.image.reduce((acc, row) =>
-    acc + row.split('').reduce((acc1, cell) => cell === '#' ? acc1 + 1 : acc1, 0),
+  const hashtagCount = imageTile.image.reduce((acc, row) => acc + row.split('').reduce((acc1, cell) => (cell === '#' ? acc1 + 1 : acc1), 0),
     0);
 
   return hashtagCount - (seaMonsterCount * SEAMONSTER_SIZE);
-}
+};
 
 console.log('Part 1: ', getCornerTiles());
 console.log('Part 2: ', getNonSeaMonsterCount());

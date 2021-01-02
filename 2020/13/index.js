@@ -1,22 +1,22 @@
 const fs = require('fs');
 
-const [timestamp, schedules] = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n');
+const [time, schedules] = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n');
 
 const getWaitTimes = () => {
   const runningBusses = schedules.split(',').filter((bus) => bus !== 'x').map((x) => +x);
-  const departureTime = +timestamp;
+  const departureTime = +time;
   const firstBus = runningBusses.reduce((acc, busId) => {
     const waitTime = busId - (departureTime % busId);
     return waitTime < acc.waitTime ? { busId, waitTime } : acc;
   }, { busId: 0, waitTime: Number.MAX_SAFE_INTEGER });
 
   return firstBus.busId * firstBus.waitTime;
-}
+};
 
 const getEarliestConsecutiveTimestamp = () => {
   const runningBusses = schedules.split(',')
     .map((busId, idx) => ({ busId: +busId, idx }))
-    .filter(({ busId }) => !Number.isNaN(busId))
+    .filter(({ busId }) => !Number.isNaN(busId));
 
   const { timestamp } = runningBusses.reduce((acc, { busId, idx }) => {
     // The first bus in the schedule
@@ -37,7 +37,7 @@ const getEarliestConsecutiveTimestamp = () => {
   }, { timestamp: 0, interval: 0 });
 
   return timestamp;
-}
+};
 
 console.log('Part 1: ', getWaitTimes());
 console.log('Part 2: ', getEarliestConsecutiveTimestamp());

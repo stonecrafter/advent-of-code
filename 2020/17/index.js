@@ -14,34 +14,34 @@ const getInitialState = (is4d = false) => {
   });
 
   return state;
-}
+};
 
-const getNeighbourPositions = (pos) =>
-  pos.split(',').reduce((processingArray, char, idx) => {
-    if (char === ',') return processingArray;
+const getNeighbourPositions = (pos) => pos.split(',').reduce((processingArray, char, idx) => {
+  if (char === ',') return processingArray;
 
-    // Split this character into +, - and self
-    const num = +char;
-    return processingArray.reduce((acc, item) => {
-      const splitItem = item.split(',');
-      const lowItem = [...splitItem];
-      const highItem = [...splitItem];
-      lowItem[idx] = (num - 1);
-      highItem[idx] = (num + 1);
+  // Split this character into +, - and self
+  const num = +char;
+  return processingArray.reduce((acc, item) => {
+    const splitItem = item.split(',');
+    const lowItem = [...splitItem];
+    const highItem = [...splitItem];
+    lowItem[idx] = (num - 1);
+    highItem[idx] = (num + 1);
 
-      return [
-        ...acc,
-        lowItem.join(','),
-        item,
-        highItem.join(',')
-      ]
-    }, []);
-  }, [pos])
+    return [
+      ...acc,
+      lowItem.join(','),
+      item,
+      highItem.join(','),
+    ];
+  }, []);
+}, [pos])
   // Don't include self as a neighbour
   .filter((neighbour) => neighbour !== pos);
 
-const getNumActive = (cellList, activeList) =>
-  cellList.reduce((acc, cell) => activeList.includes(cell) ? acc + 1 : acc, 0);
+const getNumActive = (cellList, activeList) => cellList.reduce(
+  (acc, cell) => (activeList.includes(cell) ? acc + 1 : acc), 0,
+);
 
 // Should this cube be active or inactive in the next iteration?
 const shouldCubeBeActive = (cubePos, isActive, activeList) => {
@@ -51,11 +51,10 @@ const shouldCubeBeActive = (cubePos, isActive, activeList) => {
   if (isActive) {
     // Stays active if exactly 2 or 3 active neighbours
     return (activeNeighboursCount === 2 || activeNeighboursCount === 3);
-  } else {
-    // Becomes active if exactly 3 neighbours are active
-    return activeNeighboursCount === 3;
   }
-}
+  // Becomes active if exactly 3 neighbours are active
+  return activeNeighboursCount === 3;
+};
 
 const iterate = (activeList) => {
   const newActiveList = [];
@@ -78,7 +77,7 @@ const iterate = (activeList) => {
   });
 
   return newActiveList;
-}
+};
 
 const getActiveCubes = (iterations, is4d) => {
   let activeList = getInitialState(is4d);
@@ -87,7 +86,7 @@ const getActiveCubes = (iterations, is4d) => {
   }
 
   return activeList.length;
-}
+};
 
 console.log('Part 1: ', getActiveCubes(6));
 console.log('Part 2: ', getActiveCubes(6, true));

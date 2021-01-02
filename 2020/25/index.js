@@ -13,7 +13,7 @@ const getLoopSize = (pubKey) => {
   }
 
   return loopSize;
-}
+};
 
 const getKeyForLoopSize = (loopSize, subjectNum) => {
   let val = 1;
@@ -24,9 +24,8 @@ const getKeyForLoopSize = (loopSize, subjectNum) => {
   }
 
   return val;
-}
+};
 
-const getEncryptionKey = () =>
-  getKeyForLoopSize(getLoopSize(cardPubKey), doorPubKey);
+const getEncryptionKey = () => getKeyForLoopSize(getLoopSize(cardPubKey), doorPubKey);
 
 console.log('Part 1: ', getEncryptionKey());

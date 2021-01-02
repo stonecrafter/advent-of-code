@@ -8,11 +8,10 @@ const INSTRUCTIONS = {
   ACC: 'acc',
 };
 
-const getParsedInstructions = () =>
-  inputList.map((item) => {
-    const [cmd, value] = item.split(' ');
-    return { cmd, value: +value };
-  });
+const getParsedInstructions = () => inputList.map((item) => {
+  const [cmd, value] = item.split(' ');
+  return { cmd, value: +value };
+});
 
 const getHighestAccVal = (instructions) => {
   let idx = 0;
@@ -36,7 +35,7 @@ const getHighestAccVal = (instructions) => {
           idx += 1;
           break;
         case INSTRUCTIONS.JUMP:
-          idx = idx + currInstr.value;
+          idx += currInstr.value;
           if (currInstr.value === 0) {
             // Prevent infinite loop in case of jumping back to itself
             currInstr.acc = 0;
@@ -49,12 +48,12 @@ const getHighestAccVal = (instructions) => {
   }
 
   return { finalVal: acc, terminated: !duplicateFound };
-}
+};
 
 const getHighestValWithError = () => {
   const result = getHighestAccVal(getParsedInstructions());
   return result.finalVal;
-}
+};
 
 const getAllFlippedInstructions = () => {
   const instructions = getParsedInstructions();
@@ -75,7 +74,7 @@ const getAllFlippedInstructions = () => {
 
     return [...acc, newInstrSet];
   }, []);
-}
+};
 
 const getCorrectedFinalVal = () => {
   let val;
@@ -87,10 +86,11 @@ const getCorrectedFinalVal = () => {
       val = finalVal;
       return true;
     }
+    return false;
   });
 
   return val;
-}
+};
 
 console.log('Part 1: ', getHighestValWithError());
 console.log('Part 2: ', getCorrectedFinalVal());

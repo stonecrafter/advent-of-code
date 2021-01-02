@@ -18,27 +18,25 @@ const findTwoNumbers = () => {
   });
 
   return sum;
-}
+};
 
 const findThreeNumbers = () => {
   let sum;
-  numbersList.some((num1, i) =>
-    numbersList.some((num2, j) => {
-      if (i === j || num1 + num2 >= 2020) return false;
+  numbersList.some((num1, i) => numbersList.some((num2, j) => {
+    if (i === j || num1 + num2 >= 2020) return false;
 
-      const targetNum = 2020 - num1 - num2;
+    const targetNum = 2020 - num1 - num2;
 
-      if (numbersList.includes(targetNum)) {
-        sum = targetNum * num1 * num2;
-        return true;
-      }
-  
-      return false;
-    })
-  );
+    if (numbersList.includes(targetNum)) {
+      sum = targetNum * num1 * num2;
+      return true;
+    }
+
+    return false;
+  }));
 
   return sum;
-}
+};
 
 console.log('Part 1: ', findTwoNumbers());
 console.log('Part 2: ', findThreeNumbers());

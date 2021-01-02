@@ -4,8 +4,7 @@ const inputList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n').
 
 const WINDOW = 25;
 
-const isSumOfTwo = (target, numList) =>
-  numList.some((num) => numList.includes(target - num));
+const isSumOfTwo = (target, numList) => numList.some((num) => numList.includes(target - num));
 
 const getFirstBadNumber = () => {
   const badNumber = inputList.find((num, idx) => {
@@ -15,7 +14,7 @@ const getFirstBadNumber = () => {
   });
 
   return badNumber;
-}
+};
 
 const findRangeForTargetSum = (targetSum, numList) => {
   let currSum = 0;
@@ -23,17 +22,17 @@ const findRangeForTargetSum = (targetSum, numList) => {
   numList.some((num, idx) => {
     if (currSum < targetSum) {
       currSum += num;
-    } else {
-      endIdx = idx;
-      return true;
+      return false;
     }
+    endIdx = idx;
+    return true;
   });
 
   return {
     isExactSum: currSum === targetSum,
-    numRange: numList.slice(0, endIdx)
+    numRange: numList.slice(0, endIdx),
   };
-}
+};
 
 const getEncryptionWeakness = () => {
   const targetSum = getFirstBadNumber();
@@ -46,10 +45,11 @@ const getEncryptionWeakness = () => {
       result = range;
       return true;
     }
+    return false;
   });
 
   return Math.max(...result.numRange) + Math.min(...result.numRange);
-}
+};
 
 console.log('Part 1: ', getFirstBadNumber());
 console.log('Part 2: ', getEncryptionWeakness());

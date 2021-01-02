@@ -5,32 +5,37 @@ const inputList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n');
 const seatIds = inputList.map((seat) => {
   // Min and max should be equal at the end so we only need one of them
   const { minRow, minCol } = seat.split('').reduce((acc, code) => {
-    const rowIncrement = Math.ceil((acc.maxRow - acc.minRow)/ 2);
-    const colIncrement = Math.ceil((acc.maxCol - acc.minCol)/ 2);
+    const rowIncrement = Math.ceil((acc.maxRow - acc.minRow) / 2);
+    const colIncrement = Math.ceil((acc.maxCol - acc.minCol) / 2);
 
     switch (code) {
       case 'F':
         return {
           ...acc,
-          maxRow: acc.maxRow - rowIncrement
+          maxRow: acc.maxRow - rowIncrement,
         };
       case 'B':
         return {
           ...acc,
-          minRow: acc.minRow + rowIncrement
+          minRow: acc.minRow + rowIncrement,
         };
       case 'L':
         return {
           ...acc,
-          maxCol: acc.maxCol - colIncrement
+          maxCol: acc.maxCol - colIncrement,
         };
       case 'R':
         return {
           ...acc,
-          minCol: acc.minCol + colIncrement
+          minCol: acc.minCol + colIncrement,
         };
+      default:
+        // Should never happen
+        return acc;
     }
-  }, { minRow: 0, maxRow: 127, minCol: 0, maxCol: 7 });
+  }, {
+    minRow: 0, maxRow: 127, minCol: 0, maxCol: 7,
+  });
 
   return (minRow * 8) + minCol;
 });

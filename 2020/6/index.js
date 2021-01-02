@@ -8,8 +8,8 @@ const getTotalYesCount = () => {
     return Array.from(new Set(allYes)).length;
   });
 
-  return answersPerGroup.reduce((acc, numYes) => acc += numYes, 0)
-}
+  return answersPerGroup.reduce((acc, numYes) => acc + numYes, 0);
+};
 
 const getTotalYesQuestionsCount = () => {
   const sharedAnswers = groupsList.map((group) => {
@@ -17,11 +17,11 @@ const getTotalYesQuestionsCount = () => {
     const yesPerPerson = group.split('\n').map((yes) => Array.from(new Set(yes)));
     // Multi-array intersection: get questions everyone answered yes to
     // Not the most efficient, but it works
-    return yesPerPerson.reduce((a, b) => a.filter(c => b.includes(c))).length;
+    return yesPerPerson.reduce((a, b) => a.filter((c) => b.includes(c))).length;
   });
 
-  return sharedAnswers.reduce((acc, numYes) => acc += numYes, 0)
-}
+  return sharedAnswers.reduce((acc, numYes) => acc + numYes, 0);
+};
 
 console.log('Part 1: ', getTotalYesCount());
 console.log('Part 2: ', getTotalYesQuestionsCount());

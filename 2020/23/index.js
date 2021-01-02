@@ -38,9 +38,11 @@ const generateCups = (numArray) => {
   finalCup.next = prevCup;
 
   return { firstCup: prevCup, valueMap };
-}
+};
 
-const playRound = ({ firstCup, valueMap, rounds, highestNum, lowestNum }) => {
+const playRound = ({
+  firstCup, valueMap, rounds, highestNum, lowestNum,
+}) => {
   let currentCup = firstCup;
   for (let i = 0; i < rounds; i++) {
     // Pick up items - and remove from linked list
@@ -70,13 +72,14 @@ const playRound = ({ firstCup, valueMap, rounds, highestNum, lowestNum }) => {
 
     // Put the picked up items back down after the destination
     const destNext = destItem.next;
-    destItem.next = pickedUpItems[0];
+    const [firstItem] = pickedUpItems[0];
+    destItem.next = firstItem;
     pickedUpItems[2].next = destNext;
 
     // Now look at the number after the current one
     currentCup = currentCup.next;
   }
-}
+};
 
 const getCupOrder = (startConfig, rounds) => {
   const startList = startConfig.toString().split('').map(Number);
@@ -86,7 +89,9 @@ const getCupOrder = (startConfig, rounds) => {
   // This is a pointer to the first cup we will consider
   const { firstCup, valueMap } = generateCups(startList);
 
-  playRound({ firstCup, valueMap, rounds, highestNum, lowestNum });
+  playRound({
+    firstCup, valueMap, rounds, highestNum, lowestNum,
+  });
 
   // Get the final ordering of numbers starting from '1'
   let itemNode = valueMap.get(1).next;
@@ -95,9 +100,9 @@ const getCupOrder = (startConfig, rounds) => {
     order += itemNode.value.toString();
     itemNode = itemNode.next;
   }
-  
+
   return order;
-}
+};
 
 const getMillionCupNumbers = (startConfig, rounds) => {
   const startNumList = startConfig.toString().split('').map(Number);
@@ -110,11 +115,13 @@ const getMillionCupNumbers = (startConfig, rounds) => {
 
   const { firstCup, valueMap } = generateCups(startNumList);
 
-  playRound({ firstCup, valueMap, rounds, highestNum: ONE_MILLION, lowestNum });
+  playRound({
+    firstCup, valueMap, rounds, highestNum: ONE_MILLION, lowestNum,
+  });
 
-  let itemNode = valueMap.get(1).next;
+  const itemNode = valueMap.get(1).next;
   return itemNode.value * itemNode.next.value;
-}
+};
 
 console.log('Part 1: ', getCupOrder(PUZZLE_INPUT, 100));
 console.log('Part 2: ', getMillionCupNumbers(PUZZLE_INPUT, TEN_MILLION));
