@@ -48,7 +48,7 @@ const findBag = (currentBagId, targetBagId) => {
 
 const getPossibilitiesCount = (targetBag) => Object.keys(bagsMap).filter(
   (bag) => findBag(bag, targetBag),
-).length;
+).length - 1; // Don't include the target bag itself
 
 const getTotalChildBags = (targetBag) => {
   const childBags = bagsMap[targetBag];

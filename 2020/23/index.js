@@ -72,7 +72,7 @@ const playRound = ({
 
     // Put the picked up items back down after the destination
     const destNext = destItem.next;
-    const [firstItem] = pickedUpItems[0];
+    const firstItem = pickedUpItems[0];
     destItem.next = firstItem;
     pickedUpItems[2].next = destNext;
 

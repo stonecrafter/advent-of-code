@@ -4,51 +4,6 @@ const tileList = fs.readFileSync(`${__dirname}/input.txt`, 'utf8').split('\n\n')
 
 const DIMENSION = Math.sqrt(tileList.length);
 
-/**
- * SOLUTION FOR PART 1
- */
-
-const tileBorderMap = tileList.reduce((tileAcc, tile) => {
-  const imageRows = tile.split('\n').slice(1);
-  const tileId = tile.match(/\d+/)[0];
-  return {
-    ...tileAcc,
-    [tileId]: {
-      top: imageRows[0],
-      right: imageRows.reduce((acc, row) => acc + row[row.length - 1], ''),
-      bottom: imageRows[imageRows.length - 1],
-      left: imageRows.reduce((acc, row) => acc + row[0], ''),
-    },
-  };
-}, {});
-
-const findMatchingTileForBorder = (border, currentTileId) => Object.keys(tileBorderMap).find(
-  (key) => {
-  // Don't try to match with the current tile
-    if (key === currentTileId) return false;
-    const borders = Object.values(tileBorderMap[key]);
-    return borders.includes(border) || borders.includes(border.split('').reverse().join(''));
-  },
-);
-
-const countTileMatches = (tileId) => {
-  const tilesToMatch = tileBorderMap[tileId];
-  return Object.values(tilesToMatch)
-    .reduce((acc, border) => (findMatchingTileForBorder(border, tileId) ? acc + 1 : acc),
-      0);
-};
-
-// Corner tiles are those having two borders that don't match anything?
-const getCornerTiles = () => Object.keys(tileBorderMap).reduce(
-  (acc, id) => (countTileMatches(id) === 2 ? acc * +id : acc), 1,
-);
-
-/**
- * BEGIN PART 2, aka the way more complicated part
- * I'm totally self-aware of how ugly this code is
- * I'd take the time to clean this up if it wasn't already 2021
- */
-
 class Tile {
   constructor(id, image) {
     // This will never change
@@ -166,6 +121,8 @@ const getCornerTileIds = () => {
     return matchCount === 2 ? [...tileAcc, tile.id] : tileAcc;
   }, []);
 };
+
+const countCornerTiles = () => getCornerTileIds().reduce((acc, id) => acc * +id, 1);
 
 const findMatchingTile = (border, id) => {
   const currentBorders = getCurrentBorders();
@@ -376,11 +333,15 @@ const getNonSeaMonsterCount = () => {
 
   const imageTile = buildImage();
   const seaMonsterCount = findSeaMonstersFromImage(imageTile);
-  const hashtagCount = imageTile.image.reduce((acc, row) => acc + row.split('').reduce((acc1, cell) => (cell === '#' ? acc1 + 1 : acc1), 0),
-    0);
+  const hashtagCount = imageTile.image.reduce(
+    (acc, row) => acc + row.split('').reduce(
+      (acc1, cell) => (cell === '#' ? acc1 + 1 : acc1), 0,
+    ),
+    0,
+  );
 
   return hashtagCount - (seaMonsterCount * SEAMONSTER_SIZE);
 };
 
-console.log('Part 1: ', getCornerTiles());
+console.log('Part 1: ', countCornerTiles());
 console.log('Part 2: ', getNonSeaMonsterCount());

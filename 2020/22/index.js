@@ -32,6 +32,7 @@ const playRecursiveRound = (deck1, deck2, roundConfigs) => {
     && (round.deck2.join(',') === deck2.join(','))));
   if (areBothDecksEqual) {
     deck2.splice(0, deck2.length);
+    return;
   }
 
   roundConfigs.push({ deck1: [...deck1], deck2: [...deck2] });
